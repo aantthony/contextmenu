@@ -20,27 +20,57 @@
 	}
 	var menustack = [];
 	var preview; //Extension to the menustack.
-	var _ = d.createElement("div");
 	d.body.className+=" osx10_7";
-	_.className = "_contextmenu_screen_";
 	var menus_dom = d.getElementsByTagName("menu");
 	var timeout = 150;
-	_.addEventListener("mousedown", function(){
-		menustack = [];
-		_.style.opacity = "0.0";
-		setTimeout(function () {
-			_.style.display = "none";
-			_.style.opacity = "1.0";
-		}, timeout);
+	function onmousedown(e){
+		console.log("CLICK");
+		isActive(false);
+		while(menustack.length){
+			popmenu(true);
+		}
+		console.log("STOP ALL EVENTS");
+		e.stopPropagation();
+		e.preventDefault();
+		return false;
+	}
+	function onclick(e){
+		console.log("click");
+	}
+	document.getElementById("logbtn").addEventListener("mousedown", function(){
+		console.log("mousedown message");
 	});
-	_.addEventListener("contextmenu", function (e){
+	document.getElementById("logbtn").addEventListener("click", function(){
+		console.log("CLICK MESSAGE");
+	});
+	var active = false;
+	function isActive(j){
+		console.log("ACTIVE: ", j);
+		if(j === false){
+			d.body.removeEventListener("mousedown", onmousedown, false);
+			d.body.removeEventListener("click", onmousedown, true);
+			
+			active = false;
+			return;
+		}
+		if(active){
+			return;
+		}
+		active = true;
+		d.body.addEventListener("mousedown", onmousedown);
+		d.body.addEventListener("click", onclick);
+	}
+	isActive("TEST")
+	d.body.addEventListener("contextmenu", function (e){
+		return;
+		console.log("END");
 		menustack = [];
 		e.preventDefault();
 		return false;
-	});
+	}, false);
 	
-	_.addEventListener("mouseover", function(e){
-		if(e.target !== _) {
+	d.body.addEventListener("mouseover", function(e){
+		if(e.target !== d.body) {
 			return;
 		}
 		//Hide preview menu.
@@ -51,6 +81,7 @@
 	});
 	function hideMenu(menu, fade){
 		if(fade) {
+			console.log("will fade out: ", menu);
 			menu.style.opacity = "0.0";
 			setTimeout(function () {
 				menu.style.display = "none";
@@ -75,6 +106,7 @@
 		var menu = menus[i];
 		var p = menu.parentNode;
 		menu.addEventListener("mouseover", onmouseover, false);
+		menu.addEventListener("mousedown", onmenumousedown);
 		if(p.nodeName === "MENU") {
 			var clone = d.createElement("menuitem");
 			menu.className += " submenu";
@@ -88,13 +120,13 @@
 			//clone.addEventListener("mouseout", onsubcontextmenu); //to another node
 			//menu.addEventListener("mouseout", onsubmouseout, false);
 			p.replaceChild(clone, menu);
-			_.appendChild(menu);
+			d.body.appendChild(menu);
 		}else {
 			p.removeChild(menu);
-			_.appendChild(menu);
+			d.body.appendChild(menu);
 		}
 	}
-	d.body.appendChild(_);
+	//d.body.appendChild(_);
 	
 	function mother(name, node) {
 		if(node.nodeName === name) {
@@ -139,9 +171,9 @@
 		}
 		
 	}
-	function popmenu(){
+	function popmenu(fade){
 		var top = menustack.pop();
-		hideMenu(top);
+		hideMenu(top, fade);
 		return top;
 	}
 	function onsubmouseout(e){
@@ -163,6 +195,9 @@
 		hideMenu(preview);
 		preview = undefined;
 	}
+	function onmenumousedown(e) {
+		e.stopPropagation();
+	}
 	function onsubcontextmenu(e){
 		var menuitem = e.srcElement;
 		var menu = document.getElementById(menuitem.getAttribute("contextmenu"));
@@ -175,7 +210,7 @@
 		menu.style.top = (pos.top - 5) + "px";
 		menu.style.left = (pos.left + pos.width) + "px";
 		menu.style.display = "inline-block";
-		_.style.display = "block";
+		
 		menuitem.default_className = menuitem.className;
 		if(!menuitem.opensubmenu) {
 			menuitem.setAttribute("open", true);
@@ -185,13 +220,17 @@
 		return false;
 	}
 	function oncontextmenu(e){
+		console.log(e);
+		console.log(e.srcElement.getAttribute("contextmenu"));
 		var menu = document.getElementById(e.srcElement.getAttribute("contextmenu"));
+		console.log("Active");
+		isActive(true);
 		menustack.push(menu);
 		menu.style.top = (e.pageY - 5) + "px";
 		menu.style.left = e.pageX + "px";
 		menu.style.display = "inline-block";
-		_.style.display = "block";
 		e.preventDefault();
+		e.stopPropagation();
 		return false;
 	}
 	function onselectchange(e) {
