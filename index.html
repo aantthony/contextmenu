@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel='stylesheet' href="contextmenu.css" type="text/css" media="all" />
+</head>
+<body style="background: white">
+  <menu type="context" id="mymenu">
+    <menuitem label="Back" onclick="" icon="/images/refresh-icon.png"></menuitem>
+    <menuitem label="Reload Page" icon="/images/comment_icon.gif"></menuitem>
+    <menuitem label="Open in Dashboard&hellip;" icon="/images/comment_icon.gif"></menuitem>
+    <hr />
+    <menuitem label="View Source" icon="/images/comment_icon.gif"></menuitem>
+    <menuitem label="Save Page As&hellip;" icon="/images/comment_icon.gif"></menuitem>
+    <menuitem label="Print Page&hellip;" icon="/images/comment_icon.gif"></menuitem>
+    <hr />
+    <menuitem label="Inspect Element" icon="/images/comment_icon.gif"></menuitem>
+    
+    <menu label="Share on..." icon="/images/share_icon.gif">
+      <menuitem label="Twitter" icon="/images/twitter_icon.gif" onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
+      <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif" onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+    </menu>
+  </menu>
+  
+  <div style="padding:64px">
+    
+    <section contextmenu="mymenu" class="contextmenu">
+      Sample text.
+    </section>
+    
+  <input type="button" contextmenu="menu" value="Share..." />
+  </div>
+  <script type="text/javascript" src="contextmenu.js"></script>
+</body>
+</html>
