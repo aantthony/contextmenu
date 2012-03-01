@@ -18,6 +18,10 @@
     <menu label="Share on..." icon="/images/share_icon.gif">
       <menuitem label="Twitter" icon="/images/twitter_icon.gif" onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
       <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif" onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+      <menu label="EMail">
+        <menuitem label="GMail"></menuitem>
+        <menuitem label="Yahoo! Mail"></menuitem>
+      </menu>
     </menu>
   </menu>
   
@@ -26,6 +30,7 @@
     <section contextmenu="mymenu" class="contextmenu">
       Sample text.
     </section>
+    <input type="button" value="Alert" onclick="alert('hi')" />
     
   <input type="button" contextmenu="menu" value="Share..." />
   </div>
