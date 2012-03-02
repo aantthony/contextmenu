@@ -10,12 +10,12 @@ body > div._contextmenu_screen_ {
     -webkit-transition: opacity 0.15s linear;
 }
 
-menu{
+._contextmenu_screen_ menu {
     display: inline-block;
     margin: 0;
     padding: 0;
 }
-menuitem{
+._contextmenu_screen_ menuitem{
     display: block;
     margin: 0;
     padding: 0;
@@ -45,10 +45,10 @@ menuitem{
 .osx10_7 ._contextmenu_screen_ > menu.submenu {
     border-top-left-radius: 0px;
 }
-menu > menu:before{
+._contextmenu_screen_ menu > menu:before{
     content: attr(label);
 }
-.osx10_7 menu > menu:after{
+.osx10_7 ._contextmenu_screen_ menu > menu:after{
     content: "\25B6";
     float: right;
     position: relative;
@@ -57,7 +57,7 @@ menu > menu:before{
     font-size: 12px;
     color: #404040;
 }
-.osx10_7 menu > .submenu:after{
+.osx10_7 ._contextmenu_screen_ menu > .submenu:after{
     content: "\25B6";
     float: right;
     position: relative;
@@ -67,42 +67,37 @@ menu > menu:before{
     color: #404040;
 }
 
-.osx10_7 menu > .submenu:hover:after{
+.osx10_7 ._contextmenu_screen_ menu > .submenu:hover:after{
     color: white;
 }
-.osx10_7 menu > .submenu[open=true]:after{
+.osx10_7 ._contextmenu_screen_ menu > .submenu[open=true]:after{
     color: white;
 }
-.osx10_7 menu > menu:hover:after{
+.osx10_7 ._contextmenu_screen_ menu > menu:hover:after{
     color: white;
 }
-menu > menu > menuitem{
-    display: none;
-}
-menu > menu{
-    display: block;
-}
-menu *{
+
+._contextmenu_screen_ menu *{
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
 }
-menu menuitem, menu > menu{
+._contextmenu_screen_ menu menuitem{
     -webkit-user-drag: none;
 }
-.osx10_7 menu menuitem, menu > menu{
+.osx10_7 ._contextmenu_screen_ menu menuitem{
     height: 19px;
     padding: 0px 19px 0px 21px;
 }
-.osx10_7 menu menuitem:hover{
+.osx10_7 ._contextmenu_screen_ menu menuitem:hover{
     background: #3c6ff7 url(repeat-x.png) repeat-x;
     color: white;
 }
-.osx10_7 menu menuitem.submenu[open=true]{
+.osx10_7 ._contextmenu_screen_ menu menuitem.submenu[open=true]{
     background: #3c6ff7 url(repeat-x.png) repeat-x;
     color: white;
 }
-.osx10_7 menu hr {
+.osx10_7 ._contextmenu_screen_ menu hr {
     height:0px;
     border: none;
     /* results in background: #e3e3e3; */
@@ -110,6 +105,6 @@ menu menuitem, menu > menu{
     margin: 5px 1px 6px 1px;
 }
 
-menuitem:before{
+._contextmenu_screen_ menuitem:before{
     content: attr(label);
 }

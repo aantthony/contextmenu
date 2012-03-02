@@ -5,25 +5,31 @@
 </head>
 <body style="background: white">
   <menu type="context" id="mymenu">
-    <menuitem label="Back" onclick="" icon="/images/refresh-icon.png"></menuitem>
-    <menuitem label="Reload Page" icon="/images/comment_icon.gif"></menuitem>
-    <menuitem label="Open in Dashboard&hellip;" icon="/images/comment_icon.gif"></menuitem>
+    <menuitem label="Back" onclick=""></menuitem>
+    <menuitem label="Reload Page"></menuitem>
+    <menuitem label="Open in Dashboard&hellip;"></menuitem>
     <hr />
-    <menuitem label="View Source" icon="/images/comment_icon.gif"></menuitem>
-    <menuitem label="Save Page As&hellip;" icon="/images/comment_icon.gif"></menuitem>
-    <menuitem label="Print Page&hellip;" icon="/images/comment_icon.gif"></menuitem>
+    <menuitem label="View Source" onclick="alert('source');"></menuitem>
+    <menuitem label="Save Page As&hellip;"></menuitem>
+    <menuitem label="Print Page&hellip;"></menuitem>
     <hr />
-    <menuitem label="Inspect Element" icon="/images/comment_icon.gif"></menuitem>
+    <menuitem label="Inspect Element"></menuitem>
     
     <menu label="Share on..." icon="/images/share_icon.gif">
-      <menuitem label="Twitter" icon="/images/twitter_icon.gif" onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
-      <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif" onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+      <menuitem label="Twitter" icon="/images/twitter_icon.gif"></menuitem>
+      <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif"></menuitem>
       <menu label="EMail">
         <menuitem label="GMail"></menuitem>
         <menuitem label="Yahoo! Mail"></menuitem>
       </menu>
     </menu>
   </menu>
+  
+  <menu label="Share Sheet" id="sharesheet">
+    <menuitem label="Twitter" icon="/images/twitter_icon.gif" onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
+    <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif" onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+  </menu>
+  
   
   <div style="padding:64px">
     
@@ -32,8 +38,29 @@
     </section>
     <input type="button" value="Alert" onclick="alert('hi')" />
     
-  <input type="button" contextmenu="menu" value="Share..." />
+  <input type="button" class="contextmenu" contextmenu="sharesheet" value="Share..." />
   </div>
+  <code>
+    
+  	var menu = contextmenu(
+  		[
+  			{
+  				label: "First Item",
+  				onclick: function() {
+
+  				}
+  			},
+  			{
+  				label: "Second Item",
+  				children: [
+  					{
+  						label: "Sub Item"
+  					}
+  				]
+  			}
+  		]
+  	);
+  	</code>
   <script type="text/javascript" src="contextmenu.js"></script>
 </body>
 </html>
