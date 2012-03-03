@@ -5,36 +5,70 @@
 </head>
 <body style="background: white">
   <menu type="context" id="mymenu">
-    <menuitem label="Back" onclick=""></menuitem>
-    <menuitem label="Reload Page"></menuitem>
-    <menuitem label="Open in Dashboard&hellip;"></menuitem>
-    <hr />
-    <menuitem label="View Source" onclick="alert('source');"></menuitem>
-    <menuitem label="Save Page As&hellip;"></menuitem>
-    <menuitem label="Print Page&hellip;"></menuitem>
-    <hr />
-    <menuitem label="Inspect Element"></menuitem>
     
-    <menu label="Share on..." icon="/images/share_icon.gif">
-      <menuitem label="Twitter" icon="/images/twitter_icon.gif"></menuitem>
-      <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif"></menuitem>
-      <menu label="EMail">
-        <menuitem label="GMail"></menuitem>
-        <menuitem label="Yahoo! Mail"></menuitem>
-      </menu>
+    
+    
+    <menuitem label="New Folder" onclick=""></menuitem>
+    <hr />
+    <menuitem label="Get Info"></menuitem>
+    <hr />
+    <menuitem label="Change Desktop Background&hellip;"></menuitem>
+    <menuitem label="Clean Up" onclick="alert('source');"></menuitem>
+    <menu label="Clean Up By">
+      <menuitem label="Name"></menuitem>
+      <menuitem label="Kind"></menuitem>
+      <menuitem label="Date Modified"></menuitem>
     </menu>
+    <menu label="Sort By">
+      <menuitem label="Name"></menuitem>
+      <menuitem label="Kind"></menuitem>
+      <menuitem label="Date Modified"></menuitem>
+    </menu>
+    <menuitem label="Show View Options"></menuitem>
   </menu>
   
   <menu label="Share Sheet" id="sharesheet">
     <menuitem label="Twitter" icon="/images/twitter_icon.gif" onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
     <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif" onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
   </menu>
-  
+  <menu type="context" id="win">
+    
+    <menu label="View">
+      <menuitem label="Large icons"></menuitem>
+      <menuitem label="Medium icons"></menuitem>
+      <menuitem label="Small icons"></menuitem>
+      <hr />
+      <menuitem label="Auto arrange icons"></menuitem>
+      <menuitem label="Align icons to grid"></menuitem>
+      <hr />
+      <menuitem label="Show desktop icons"></menuitem>
+      <menuitem label="Show desktop gadgets"></menuitem>
+      
+    </menu>
+    <menu label="Sort by">
+      
+    </menu>
+    <menuitem label="Refresh"></menuitem>
+    <hr />
+    <menuitem label="Paste"></menuitem>
+    <menuitem label="Paste shortcut"></menuitem>
+    <hr />
+    <menu label="New">
+    </menu>
+    <hr />
+    <menuitem label="Screen gesolution"></menuitem>
+    <menuitem label="Gadgets"></menuitem>
+    
+    
+  </menu>
   
   <div style="padding:64px">
     
     <section contextmenu="mymenu" class="contextmenu">
       Sample text.
+    </section>
+    <section contextmenu="win" class="contextmenu">
+      Windows test.
     </section>
     <input type="button" value="Alert" onclick="alert('hi')" />
     
@@ -61,6 +95,8 @@
   		]
   	);
   	</code>
+  	<br />
+  	<img src="../img.png">
   <script type="text/javascript" src="contextmenu.js"></script>
 </body>
 </html>

@@ -8,28 +8,102 @@ body > div._contextmenu_screen_ {
     display: none;
     opacity: 1.0;
     -webkit-transition: opacity 0.15s linear;
+    overflow: hidden;
 }
 
+._contextmenu_screen_ menu.fadeout {
+    -webkit-transition: opacity 0.15s linear;
+}
 ._contextmenu_screen_ menu {
     display: inline-block;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 ._contextmenu_screen_ menuitem{
     display: block;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
-.osx10_7 ._contextmenu_screen_ > menu {
-    display: none;
-    background-color:rgba(255,255,255, 0.9490196078);
+
+._contextmenu_screen_ > menu {
     
     position: fixed;
-    z-Index: 30000;
+    display: none;
     cursor: default;
+    z-Index: 30000;
     user-select: none;
     -webkit-user-select: none;
     list-style: none;
+}
+
+._contextmenu_screen_ menuitem:before{
+    content: attr(label);
+}
+
+._contextmenu_screen_ menu *{
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+._contextmenu_screen_ menu menuitem{
+    -webkit-user-drag: none;
+}
+
+.win7 ._contextmenu_screen_ menu {
+    background: #f0f0f0 url(repeat-y.png?) repeat-y;
+    font-family: 'Segoe UI';
+    font-size: 13px;
+    padding: 4px 2px 2px 2px;
+    /* text-rendering: optimizeLegibility; */
+    -webkit-font-smoothing: subpixel-antialiased;
+    border: 1px solid #a0a0a0;
+    -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+}
+.win7 menu menuitem {
+    padding: 0px 5px 0px 32px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+}
+.win7 menu menuitem:hover{
+    border: 1px solid #b3d0f5;
+    background-color: rgba(172, 201,255, 0.05);
+}
+
+.win7 menu menuitem[open=true]{
+    border: 1px solid #b3d0f5;
+    background-color: rgba(172, 201,255, 0.05);
+}
+.win7 menu hr {
+    height: 0px;
+    border:none;
+    border-bottom: 1px solid white;
+    border-top: 1px solid #e0e0e0;
+    margin-left: 27px;
+}
+
+.win7 ._contextmenu_screen_ menu > .submenu:after{
+    content: " ";
+    display: block;
+    width: 4px;
+    height: 7px;
+    background: url(data:image/gif;base64,R0lGODlhBAAHAIABACgoKP///yH5BAEAAAEALAAAAAAEAAcAAAIIRA4WaeyrVCgAOw==) no-repeat;
+    float: right;
+    position: relative;
+    left: 0px;
+    top: 6px;
+}
+
+.osx10_7 ._contextmenu_screen_ > menu {
+    background-color:rgba(255,255,255, 0.9490196078);
+    
+    -moz-background-clip: padding;     /* Firefox 3.6 */
+	-webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
+	background-clip: padding-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+	
+    color: black;
     font-family: 'Lucida Grande';
     border-top: 1px solid rgba(0,0,0, 0.0862745098);
     border-left: 1px solid rgba(0,0,0, 0.231372549);
@@ -42,20 +116,9 @@ body > div._contextmenu_screen_ {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: subpixel-antialiased;
 }
+
 .osx10_7 ._contextmenu_screen_ > menu.submenu {
     border-top-left-radius: 0px;
-}
-._contextmenu_screen_ menu > menu:before{
-    content: attr(label);
-}
-.osx10_7 ._contextmenu_screen_ menu > menu:after{
-    content: "\25B6";
-    float: right;
-    position: relative;
-    left: 14px;
-    top: 2px;
-    font-size: 12px;
-    color: #404040;
 }
 .osx10_7 ._contextmenu_screen_ menu > .submenu:after{
     content: "\25B6";
@@ -73,18 +136,7 @@ body > div._contextmenu_screen_ {
 .osx10_7 ._contextmenu_screen_ menu > .submenu[open=true]:after{
     color: white;
 }
-.osx10_7 ._contextmenu_screen_ menu > menu:hover:after{
-    color: white;
-}
 
-._contextmenu_screen_ menu *{
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
-}
-._contextmenu_screen_ menu menuitem{
-    -webkit-user-drag: none;
-}
 .osx10_7 ._contextmenu_screen_ menu menuitem{
     height: 19px;
     padding: 0px 19px 0px 21px;
@@ -103,8 +155,4 @@ body > div._contextmenu_screen_ {
     /* results in background: #e3e3e3; */
     border-bottom: 1px solid #e4e4e4;
     margin: 5px 1px 6px 1px;
-}
-
-._contextmenu_screen_ menuitem:before{
-    content: attr(label);
 }
