@@ -64,15 +64,19 @@
   
   <div style="padding:64px">
     
-    <section contextmenu="mymenu" class="contextmenu">
+  	<select>
+  	  <option>First Item</option>
+  	  <option>Second Item</option>
+  	</select>
+    <section contextmenu="mymenu">
       Sample text.
     </section>
-    <section contextmenu="win" class="contextmenu">
+    <section contextmenu="win">
       Windows test.
     </section>
     <input type="button" value="Alert" onclick="alert('hi')" />
     
-  <input type="button" class="contextmenu" contextmenu="sharesheet" value="Share..." />
+  <input type="button" contextmenu="sharesheet" value="Share..." />
   </div>
   <code>
     
@@ -96,7 +100,7 @@
   	);
   	</code>
   	<br />
-  	<img src="../img.png">
+  	<img src="../img.png" contextmenu="mymenu">
   <script type="text/javascript" src="contextmenu.js"></script>
 </body>
 </html>
