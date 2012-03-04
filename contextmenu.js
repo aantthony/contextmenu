@@ -1,4 +1,4 @@
-var contextmenu = function (d, window) {
+(function (d, window) {
 	"use strict";
 	var nativeSupport = ((d.body.contextMenu === null) && window.HTMLMenuItemElement !== undefined),
 		lastX,
@@ -9,44 +9,12 @@ var contextmenu = function (d, window) {
 		preview,
 		timeout,
 		t,
-		preview_show_timer;
+		preview_show_timer,
+		holding = false,
+		old_contextmenu = window.contextmenu;
 
 	function nextTick(callback) {
 		setTimeout(callback, 0);
-	}
-	function guid() {
-		return (0 | 10000000 * Math.random()).toString(30) + (0 | 10000000 * Math.random()).toString(30) + (0 | 10000000 * Math.random()).toString(30);
-	}
-	function sleep_work() {
-		var resource, response;
-		if (typeof ActiveXObject === 'undefined') {
-			resource = new XMLHttpRequest();
-		} else {
-			resource = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		try {
-			resource.open('GET', '/', false);
-			resource.send(null);
-			response = resource.responseText;
-		} catch (e) {
-			// Ignore
-		}
-	}
-	// Only use sleep if you know what you are doing.
-	// WIll max out 100% if using cpu_hog = true!
-
-	function sleep(time, cpu_hog) {
-		var t_end = (new Date().getTime()) + time;
-		while (new Date().getTime() < t_end) {
-			if (!cpu_hog) {
-				try {
-					sleep_work();
-				} catch (ex) {
-					console.error(ex);
-				}
-			}
-		}
-		return (new Date().getTime()) - t_end;
 	}
 	function offset(obj) {
 		var curleft = 0,
@@ -57,7 +25,8 @@ var contextmenu = function (d, window) {
 		do {
 			curleft += obj.offsetLeft;
 			curtop += obj.offsetTop;
-		} while (obj = obj.offsetParent);
+			obj = obj.offsetParent;
+		} while (obj);
 		return {
 			left: curleft,
 			top: curtop
@@ -66,16 +35,8 @@ var contextmenu = function (d, window) {
 	function hideMenu(menu, fade) {
 		if (fade) {
 			throw ("no need to fade");
-			nextTick(function () {
-				menu.style.opacity = "0.0";
-			});
-			setTimeout(function () {
-				menu.style.display = "none";
-				menu.style.opacity = "1.0";
-			}, timeout);
-		} else {
-			menu.style.display = "none";
 		}
+		menu.style.display = "none";
 		var launcher = menu.launcher;
 		if (launcher) {
 			launcher.removeAttribute("open");
@@ -86,7 +47,7 @@ var contextmenu = function (d, window) {
 		hideMenu(top);
 		return top;
 	}
-	function mouseend(e) {
+	function mouseend() {
 		overlay.style.opacity = "0.0";
 		mousedown_timeout = setTimeout(function () {
 			while (menustack.length) {
@@ -175,9 +136,6 @@ var contextmenu = function (d, window) {
 		}, 200);
 		//Don't stop propagation, the event bubbles to the <menu /> mouseover handler
 	}
-	function stopPropagation(e) {
-		e.stopPropagation();
-	}
 	function prepareMenu(menu) {
 		var p = menu.parentNode,
 			clone;
@@ -192,10 +150,6 @@ var contextmenu = function (d, window) {
 			clone.contextMenu = menu;
 			clone.addEventListener("mouseover", onsubcontextmenu);
 			clone.addEventListener("mouseout", onsubcontextmenuout);
-
-			//This isn't right. It should end the context menu if it was a hold, i.e.,
-			//follow the same rules as the parent context menu.
-			clone.addEventListener("mouseup", stopPropagation);
 			p.replaceChild(clone, menu);
 			overlay.appendChild(menu);
 		} else {
@@ -210,6 +164,7 @@ var contextmenu = function (d, window) {
 		menu.style.left = x + "px";
 		showMenu(menu);
 		overlay.style.display = "block";
+		holding = false;
 	}
 	function oncontextsheet(e) {
 		var pos = offset(e.target),
@@ -228,11 +183,39 @@ var contextmenu = function (d, window) {
 		}
 		return contextMenufor(node.parentNode);
 	}
+	function simulateClickEvent(elm, e) {
+		var evt;
+		if (document.createEvent) {
+			evt = document.createEvent("MouseEvents");
+		}
+		if (elm && elm.dispatchEvent && evt && evt.initMouseEvent) {
+			//Disgusing API:
+			evt.initMouseEvent(
+				"click",
+				true,		// Click events bubble
+				true,		// And they can be cancelled
+				document.defaultView,
+				1,			//Single click
+				e.screenX,
+				e.screenY,
+				e.clientX,
+				e.clientY,
+				false,		// Don't apply any key modifiers 
+				false,
+				false,
+				false,
+				0,			// 0 - left, 1 - middle, 2 - right 
+				null		//Single target
+			);
+			elm.dispatchEvent(evt);
+		}
+	}
 	function oncontextmenu(e) {
 		var menu = d.getElementById(contextMenufor(e.srcElement)),
 			x = e.clientX,
 			y = e.clientY;
 		initContextMenu(menu, e.clientX, e.clientY);
+		holding = true;
 		lastX = x;
 		lastY = y;
 		e.preventDefault();
@@ -243,9 +226,7 @@ var contextmenu = function (d, window) {
 		menustack = [];
 		overlay = d.createElement("div");
 		var os_code = "osx10_7",
-			mouseup_wait_for_me = 0,
-			i,
-			l;
+			mouseup_wait_for_me = 0;
 		if (/Mac/.test(navigator.userAgent)) {
 			os_code = "osx10_7";
 		} else if (/Win/.test(navigator.userAgent)) {
@@ -265,10 +246,16 @@ var contextmenu = function (d, window) {
 				return;
 			}
 			var menuitem = e.target;
-			if (menuitem.nodeName === "MENUITEM" && menuitem.hasAttribute("contextmenu")) {
-				return false;
+			if (menuitem.nodeName === "MENUITEM") {
+				if (menuitem.contextMenu) {
+					return false;
+				}
+				if (holding) {
+					simulateClickEvent(menuitem, e);
+				}
 			}
 			if (new Date() - t < 300) {
+				holding = false;
 				return;
 			}
 			if (menuitem.nodeName === "MENUITEM") {
@@ -334,12 +321,11 @@ var contextmenu = function (d, window) {
 					});
 				}, timeout);
 				return false;
-			} else {
-				overlay.style.opacity = "1.0";
-				overlay.style.display = "block";
-				clearTimeout(mousedown_timeout);
-				nextTick(mouseend);
 			}
+			overlay.style.opacity = "1.0";
+			overlay.style.display = "block";
+			clearTimeout(mousedown_timeout);
+			nextTick(mouseend);
 		});
 		overlay.addEventListener("mouseover", function (e) {
 			if (e.target !== overlay) {
@@ -402,8 +388,12 @@ var contextmenu = function (d, window) {
 			} else {
 				menuitem = d.createElement("menuitem");
 				menuitem.setAttribute("label", xi.label);
-				xi.onclick && (menuitem.onclick = xi.onclick);
-				xi.icon && (menuitem.icon = xi.icon);
+				if (xi.onclick) {
+					menuitem.onclick = xi.onclick;
+				}
+				if (xi.icon) {
+					menuitem.icon = xi.icon;
+				}
 				menu.appendChild(menuitem);
 			}
 		}
@@ -438,6 +428,10 @@ var contextmenu = function (d, window) {
 		}
 		initContextMenu(menu, x, y);
 		return this;
-	}
-	return contextmenu;
-}(document, window);
+	};
+	contextmenu.noConflict = function () {
+		window.contextmenu = old_contextmenu;
+		return contextmenu;
+	};
+	window.contextmenu = contextmenu;
+}(document, window));
