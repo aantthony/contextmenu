@@ -2,12 +2,14 @@
 <html>
 <head>
   <link rel='stylesheet' href="contextmenu.css" type="text/css" media="all" />
+  <link rel='stylesheet' href="about/bootstrap.min.css" type="text/css" media="all" />
+  <link rel='stylesheet' href="about/about.css" type="text/css" media="all" />
+  <link rel='stylesheet' href="about/prettify.css" type="text/css" media="all" />
+  <title>Contextmenu.js</title>
 </head>
-<body style="background: white">
-  <menu type="context" id="mymenu">
-    
-    
-    
+<body>
+  <a href="http://github.com/aantthony/contextmenu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+  <menu type="context" id="samplemenu">
     <menuitem label="New Folder" onclick=""></menuitem>
     <hr />
     <menuitem label="Get Info"></menuitem>
@@ -26,81 +28,216 @@
     </menu>
     <menuitem label="Show View Options"></menuitem>
   </menu>
-  
-  <menu label="Share Sheet" id="sharesheet">
-    <menuitem label="Twitter" icon="/images/twitter_icon.gif" onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
-    <menuitem label="Facebook" icon="/images/facebook_icon16x16.gif" onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
-  </menu>
-  <menu type="context" id="win">
-    
-    <menu label="View">
-      <menuitem label="Large icons"></menuitem>
-      <menuitem label="Medium icons"></menuitem>
-      <menuitem label="Small icons"></menuitem>
-      <hr />
-      <menuitem label="Auto arrange icons"></menuitem>
-      <menuitem label="Align icons to grid"></menuitem>
-      <hr />
-      <menuitem label="Show desktop icons"></menuitem>
-      <menuitem label="Show desktop gadgets"></menuitem>
-      
-    </menu>
-    <menu label="Sort by">
-      
-    </menu>
-    <menuitem label="Refresh"></menuitem>
-    <hr />
-    <menuitem label="Paste"></menuitem>
-    <menuitem label="Paste shortcut"></menuitem>
-    <hr />
-    <menu label="New">
-    </menu>
-    <hr />
-    <menuitem label="Screen gesolution"></menuitem>
-    <menuitem label="Gadgets"></menuitem>
-    
-    
-  </menu>
-  
-  <div style="padding:64px">
-    
-  	<select>
-  	  <option>First Item</option>
-  	  <option>Second Item</option>
-  	</select>
-    <section contextmenu="mymenu">
-      Sample text.
-    </section>
-    <section contextmenu="win">
-      Windows test.
-    </section>
-    <input type="button" value="Alert" onclick="alert('hi')" />
-    
-  <input type="button" contextmenu="sharesheet" value="Share..." />
+  <div class="header">
+    <div class="container">
+      <h1>ContextMenu</h1>
+      <p>Responsive and native-looking javascript right click menu</p>
+    </div>
   </div>
-  <code>
-    
-  	var menu = contextmenu(
-  		[
-  			{
-  				label: "First Item",
-  				onclick: function() {
+  <div class="container page">
+    <div class="main">
+      <h1>Introduction</h1>
+      <div class="row">
+        <div class="span6">
+        
+      <p style="text-align:justify">
+        <u>Contextmenu</u> is a javascript library (with no dependencies) that allows the creation of native-looking right-click menus within a web page.
 
-  				}
-  			},
-  			{
-  				label: "Second Item",
-  				children: [
-  					{
-  						label: "Sub Item"
-  					}
-  				]
-  			}
-  		]
-  	);
-  	</code>
-  	<br />
-  	<img src="../img.png" contextmenu="mymenu">
+        Don't use this in an attempt to replace the default context menu (e.g., to prevent Download Linked File As..., Save Image As..) because that is very annoying. The intended use is for creating menus on objects within a page (not the entire page), and for javascript-heavy web apps.
+      </p>
+        </div>
+        <div class="span3" style="margin-left:40px; width: 280px">
+          <a class="a" href="download.zip"><button class="btn-download">Download</button></a>
+        </div>
+      </div>
+      <h1>Demo</h1>
+      <p>Right click on the text below:</p>
+      <blockquote contextmenu="samplemenu">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor odio diam. Etiam molestie viverra pellentesque. Donec mi metus, accumsan a varius quis, elementum vel orci. Fusce eget turpis augue. Suspendisse sit amet dictum tellus. Integer dapibus scelerisque velit, nec mollis turpis iaculis id. Nam sed commodo nulla. Proin sagittis molestie purus, non varius est pellentesque malesuada. Duis luctus pretium metus nec euismod. Nullam vehicula felis id libero faucibus sagittis. Nam non leo neque, ut ultricies mauris. Pellentesque a molestie diam. Aliquam erat volutpat. Fusce arcu diam, lobortis et scelerisque a, viverra eu risus.
+      </blockquote>
+      <h1>Instructions</h1>
+      <p>Download the contextmenu.css and contextmenu.js files (above)</p>
+      <p>Then in your page, add the following:</p>
+      <pre class="prettyprint">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel="stylesheet" href="contextmenu.css" type="text/css" media="all" /&gt;
+    ...
+  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+    &lt;script type="text/javascript" src="contextmenu.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+      <p>Either specify the markup using HTML context-menu notation, or use the simple Javascript API provided by the contextmenu object which builds DOM nodes, and adds some javascript to ensure browser compatibility.</p>
+      <h2>API Example</h2>
+      <div class="row">
+        <div class="span5">
+      <pre class="prettyprint">
+var menu = contextmenu([
+  {
+    label: "First Item",
+    onclick: function (e){
+      document.body.style.background = "black";
+      setTimeout(function() {
+        document.body.style.background = "";
+      }, 500);
+    }
+  },
+  {label: "Second Item"},
+  {hr : true},
+  {
+    label: "Sub menu",
+    children: [
+      {
+        label: "Another Item"
+      }
+    ]
+  }
+]);
+
+contextmenu.attach(domNode, menu);
+
+contextmenu.show(menu, 300, 200);
+</pre>
+        </div>
+        <div class="span6">
+          <pre class="demo-box" id="container">
+            <div class="demo-label">
+              #container
+            </div>
+            <input type="button" value="#button1" id="button1" class="btn" />
+            <input type="button" value="#button2" id="button2" class="btn" />
+          </pre>
+          <pre class="prettyprint">
+// Hook up an event to launch it
+contextmenu.attach($("#button1"), menu);
+
+// Or show it manually
+$("#button2").click(function (e) {
+  contextmenu.show(menu, e.target);
+  // contextmenu.show(menu, e.x, e.y);
+});
+
+// Right click the container
+contextmenu.attach($("#container"), another_menu);
+</pre>
+<div class="padding: 8.5px">
+<h1>Check out the code</h1>
+<p>The code is <a href="http://github.com/aantthony/contextmenu">available on GitHub</a>. Please contribute.</p>
+<h1>Share on Twitter!</h1>
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="aantthony" data-size="large" data-related="aantthony">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+        </div>
+      </div>
+      <h2>Detailed Example</h2>
+      <div class="row">
+        <div class="span5">
+          Javascript API equivalent
+          <pre class="prettyprint">
+var menu = contextmenu([
+  {label: "Standard"},
+  {hr: true},
+  {label: "Checkbox", checked: true},
+  {label: "Key", key: "\u2318A"}
+]);
+contextmenu.attach($("#id"), menu);
+</pre>
+<p>This will work independently of whether executed before or after the page loads.</p>
+        </div>
+        <div class="span6">
+          HTML notation: (direct child of body)
+          <pre class="prettyprint">
+&lt;menu type="context" id="menu"&gt;
+  &lt;menuitem label="Standard"&gt;&lt;/menuitem&gt;
+  &lt;hr /&gt;
+  &lt;menuitem label="Checkbox" checked="checked"&gt;&lt;/menuitem&gt;
+  &lt;menuitem label="Key" key="&amp;#8984;A"&gt;&lt;/menuitem&gt;
+&lt;/menu&gt;</pre>
+        <p>If the html node is generated after the page load, then call <code class="prettyprint">contextmenu.prepare($("#menu"));</code> and use <code class="prettyprint">contextmenu.attach</code> when needed.
+        </div>
+      </div>
+      <menu type="context" id="menu">
+        <menuitem label="Standard"></menuitem>
+      </menu>
+      <pre class="demo-box" contextmenu="menu" id="d2">
+        <div class="demo-label">&lt;div contextmenu="menu" id="id" /&gt;</div>
+        <input type="button" class="btn" value="Test" style="visibility: hidden" />
+      </pre>
+      <h2>Apps using Contextmenu.js</h2>
+      <a href="http://graph.tk/">Graph.tk</a>
+      <h1>License</h1>
+        <p>MIT</p>
+    </div>
+  </div>
+  <div class="container footer">
+    <div class="main">
+      Copyright &copy; 2012 <a href="http://twitter.com/aantthony/" title="Follow me on Twitter">@aantthony</a></div>
+  </div>
+  
+  <script type="text/javascript" src="about/prettify.js"></script>
   <script type="text/javascript" src="contextmenu.js"></script>
+  <script type="text/javascript">
+  (function(){
+    prettyPrint();
+    var menu = contextmenu([
+      {
+        label: "First Item",
+        onclick: function (e){
+          document.body.style.background = "black";
+          setTimeout(function() {
+            document.body.style.background = "";
+          }, 500);
+        }
+      },
+      {label: "Second Item"},
+      {hr: true},
+      {
+        label: "Sub menu",
+        children: [
+          {
+            label: "Another Item"
+          }
+        ]
+      }
+    ]);
+    var another_menu = contextmenu([
+      {
+        label: "New Item",
+        onclick: function (e){
+          var input = document.createElement("input");
+          input.value = "Extra button";
+          input.className = "btn";
+          input.type = "button";
+          var container = document.getElementById("container");
+          container.appendChild(input)
+          setTimeout(function (){
+            container.removeChild(input);
+          },3000);
+        }
+      },
+      {
+        hr: true
+      },
+      {
+        label: "Share\u2026",
+        children: [
+          {
+            label: "Twitter"
+          }
+        ]
+      }
+    ]);
+    
+    contextmenu.attach(document.getElementById("button1"), menu);
+    
+    document.getElementById("button2").addEventListener("click", function(e){
+      contextmenu.show(menu, e.target);
+    });
+    contextmenu.attach(document.getElementById("container"), another_menu);
+  }())
+  </script>
 </body>
 </html>

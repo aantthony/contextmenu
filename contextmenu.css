@@ -10,7 +10,9 @@ body > div._contextmenu_screen_ {
     -webkit-transition: opacity 0.15s linear;
     overflow: hidden;
 }
-
+body > menu {
+    display: none;
+}
 ._contextmenu_screen_ menu.fadeout {
     -webkit-transition: opacity 0.15s linear;
 }
@@ -60,6 +62,7 @@ body > div._contextmenu_screen_ {
     -webkit-font-smoothing: subpixel-antialiased;
     border: 1px solid #a0a0a0;
     -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+    color: black;
 }
 .win7 menu menuitem {
     padding: 0px 5px 0px 32px;
@@ -81,6 +84,7 @@ body > div._contextmenu_screen_ {
     border:none;
     border-bottom: 1px solid white;
     border-top: 1px solid #e0e0e0;
+    margin: 4px;
     margin-left: 27px;
 }
 
