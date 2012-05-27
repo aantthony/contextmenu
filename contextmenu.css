@@ -9,6 +9,7 @@ body > div._contextmenu_screen_ {
     opacity: 1.0;
     -webkit-transition: opacity 0.15s linear;
     overflow: hidden;
+	z-index: 120000;
 }
 body > menu {
     display: none;
