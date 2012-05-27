@@ -20,6 +20,7 @@
 		t,					// The time of mousedown. Used to determine if it is a hold and relase menu.
 		preview_show_timer,	// Menu previews don't show instantly, but a few hundred ms later.
 		holding = false,	// Is the user doing a hold an release menu selection?
+		doneEvents = [],
 		old_contextmenu = window.contextmenu;  // See: contextmenu.noConflict()
 
 	function nextTick(callback) {
@@ -296,6 +297,12 @@
 		e.stopPropagation();
 		return false;
 	}
+	function triggerDoneEvents() {
+		doneEvents.forEach(function (f) {
+			f();
+		});
+		doneEvents = [];
+	}
 	function inititalize() {
 		menustack = [];
 		overlay = d.createElement("div");
@@ -344,6 +351,7 @@
 						menuitem.style.background = "";
 						setTimeout(function () {
 							mouseend(e);
+							triggerDoneEvents();
 						}, 30);
 					}, 80);
 				}, 10);
@@ -533,6 +541,9 @@
 		}
 		return this;
 	};
+	contextmenu.then = function (f) {
+		doneEvents.push(f);
+	};
 	contextmenu.attach = function (element, menu) {
 		element = html(element);
 		menu = html(menu);
@@ -549,7 +560,7 @@
 		} else {
 			element.addEventListener("contextmenu", oncontextmenu);
 		}
-	}
+	};
 	contextmenu.noConflict = function () {
 		window.contextmenu = old_contextmenu;
 		return contextmenu;
