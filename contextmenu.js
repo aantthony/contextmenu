@@ -79,6 +79,7 @@
 			}
 			overlay.style.display = "none";
 			overlay.style.opacity = "1.0";
+			triggerDoneEvents();
 		}, timeout);
 	}
 
@@ -351,7 +352,6 @@
 						menuitem.style.background = "";
 						setTimeout(function () {
 							mouseend(e);
-							triggerDoneEvents();
 						}, 30);
 					}, 80);
 				}, 10);
