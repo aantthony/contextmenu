@@ -5,7 +5,7 @@
  * Released under the MIT license
  * Copyright 2012
  *
- * Date: Sun Mar 4 2012
+ * Date: Sun May 27 2012
  */
 (function (d, window) {
 	"use strict";
@@ -494,6 +494,8 @@
 					}
 					if (xi.icon) {
 						menuitem.icon = xi.icon;
+					}if(xi.checked) {
+						menuitem.setAttribute("checked", xi.checked ? "checked" : "");
 					}
 				}
 				
@@ -542,6 +544,10 @@
 		return this;
 	};
 	contextmenu.then = function (f) {
+		if(nativeSupport) {
+			f();
+			return;
+		}
 		doneEvents.push(f);
 	};
 	contextmenu.attach = function (element, menu) {
