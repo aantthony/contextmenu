@@ -494,8 +494,17 @@
 					}
 					if (xi.icon) {
 						menuitem.icon = xi.icon;
-					}if(xi.checked) {
+					}
+					if(xi.checked) {
 						menuitem.setAttribute("checked", xi.checked ? "checked" : "");
+					}
+					var key;
+					for(key in xi) {
+						if(xi.hasOwnProperty(key)) {
+							if(['label', 'icon', 'hr','onclick', 'checked'].indexOf(key) === -1) {
+								menuitem.dataset[key] = xi[key];
+							}
+						}
 					}
 				}
 				
