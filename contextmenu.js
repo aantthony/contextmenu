@@ -300,7 +300,13 @@
 	}
 	function triggerDoneEvents() {
 		doneEvents.forEach(function (f) {
-			f();
+			try{
+				f();
+			} catch(ex) {
+				setTimeout(function (){
+					throw ex;
+				}, 0);
+			}
 		});
 		doneEvents = [];
 	}
