@@ -212,11 +212,23 @@
 	function initContextMenu(menu, x, y) {
 		t = new Date();
 		menustack.push(menu);
-		menu.style.top = (y - 5) + "px";
+		menu.style.top = y + "px";
 		menu.style.left = x + "px";
 		showMenu(menu);
 		overlay.style.display = "block";
 		holding = false;
+
+		// Make sure contextmenu stays within window bounds.
+		var right = x + menu.offsetWidth;
+		var bottom = y + menu.offsetHeight;
+		var bodyHeight = document.body.offsetHeight;
+		var bodyWidth = document.body.offsetWidth;
+		if (bottom > bodyHeight) {
+			menu.style.top = (y - (bottom - bodyHeight)) + "px";
+		}
+		if (right > bodyWidth) {
+			menu.style.left = (x - (right - bodyWidth)) + "px";
+		}
 	}
 
 	// Context menu sheets are activated through buttons instead of right clicks.
