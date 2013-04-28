@@ -1,14 +1,26 @@
-/*
- * Contextmenu v0.1
- * https://github.com/aantthony/contextmenu
- *
- * Released under the MIT license
- * Copyright 2012
- *
- * Date: Sun May 27 2012
- */
-(function (d, window) {
-	"use strict";
+ /*
+	Copyright (C) 2012 Anthony Foster, https://github.com/aantthony/contextmenu (v0.1)
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+*/
+
+var EnableContextMenu = function (d, window) { "use strict";
 	var nativeSupport = ((d.body.contextMenu === null) && window.HTMLMenuItemElement !== undefined),
 		lastX,				// Last position where root context menu was launched
 		lastY,				//  ''
@@ -212,11 +224,23 @@
 	function initContextMenu(menu, x, y) {
 		t = new Date();
 		menustack.push(menu);
-		menu.style.top = (y - 5) + "px";
+		menu.style.top = y + "px";
 		menu.style.left = x + "px";
 		showMenu(menu);
 		overlay.style.display = "block";
 		holding = false;
+
+		// Make sure contextmenu stays within window bounds.
+		var right = x + menu.offsetWidth;
+		var bottom = y + menu.offsetHeight;
+		var bodyHeight = document.body.offsetHeight;
+		var bodyWidth = document.body.offsetWidth;
+		if (bottom > bodyHeight) {
+			menu.style.top = (y - (bottom - bodyHeight)) + "px";
+		}
+		if (right > bodyWidth) {
+			menu.style.left = (x - (right - bodyWidth)) + "px";
+		}
 	}
 
 	// Context menu sheets are activated through buttons instead of right clicks.
@@ -574,7 +598,7 @@
 			return;
 		}
 		element.contextMenu = menu;
-		if (element.nodeName === "INPUT") {
+		if (element.nodeName === "INPUT" || element.nodeName === "BUTTON") {
 			element.addEventListener("mouseup", oncontextsheetbtnup);
 			// element.addEventListener("mousedown", oncontextsheet); css :hover doesn't work
 			element.addEventListener("contextmenu", oncontextsheet);
@@ -586,5 +610,5 @@
 		window.contextmenu = old_contextmenu;
 		return contextmenu;
 	};
-	window.contextmenu = contextmenu;
-}(document, window));
+	return window.contextmenu = contextmenu;
+};
