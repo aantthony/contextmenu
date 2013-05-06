@@ -21,7 +21,7 @@
 */
 
 (function (d, window) { "use strict";
-	var nativeSupport = ((d.body.contextMenu === null) && window.HTMLMenuItemElement !== undefined),
+	var nativeSupport = ((d.createElement('body').contextMenu === null) && window.HTMLMenuItemElement !== undefined),
 		lastX,				// Last position where root context menu was launched
 		lastY,				//  ''
 		mousedown_timeout,	// The timer which in timeout ms, will set the overlay with display: false
@@ -33,6 +33,7 @@
 		preview_show_timer,	// Menu previews don't show instantly, but a few hundred ms later.
 		holding = false,	// Is the user doing a hold an release menu selection?
 		doneEvents = [],
+		toAppend = [],		// The menus which should be appended to the body as soon as the document.body is created
 		old_contextmenu = window.contextmenu;  // See: contextmenu.noConflict()
 
 	function nextTick(callback) {
@@ -187,14 +188,21 @@
 			}
 			preview = menu;
 			pos = offset(menuitem);
-			menu.style.top = (pos.top - 5) + "px";
+			menu.style.top = Math.max(pos.top - 5, 0) + "px";
 			menu.style.left = (pos.left + pos.width - 1) + "px";
 			showMenu(menu);
 		}, 200);
 		// Don't stop propagation, the event bubbles to the <menu /> mouseover handler,
 		// which will hide any dead contextmenus
 	}
-
+	function appendToOverlay(menu) {
+		if (overlay) {
+			overlay.appendChild(menu);
+		} else {
+			toAppend.push(menu);
+		}
+		
+	}
 	// Adds javascript code, so it works without native html5 contextmenu support
 	function prepareMenu(menu) {
 		var p = menu.parentNode,
@@ -215,16 +223,16 @@
 			clone.addEventListener("mouseover", onsubcontextmenu);
 			clone.addEventListener("mouseout", onsubcontextmenuout);
 			p.replaceChild(clone, menu);
-			overlay.appendChild(menu);
+			appendToOverlay(menu);
 		} else {
 			p.removeChild(menu);
-			overlay.appendChild(menu);
+			appendToOverlay(menu);
 		}
 	}
 	function initContextMenu(menu, x, y) {
 		t = new Date();
 		menustack.push(menu);
-		menu.style.top = y + "px";
+		menu.style.top = Math.max(y - 5, 0) + "px";
 		menu.style.left = x + "px";
 		showMenu(menu);
 		overlay.style.display = "block";
@@ -494,11 +502,6 @@
 			}
 		}
 	}
-	if (!nativeSupport) {
-		inititalize();
-		attachEventsToAllMenus();
-		hookUpContextMenus();
-	}
 	function buildMenu(x) {
 		var menu = d.createElement("menu"),
 			i,
@@ -610,6 +613,22 @@
 		window.contextmenu = old_contextmenu;
 		return contextmenu;
 	};
+
+
+
+	if (!nativeSupport) {
+		window.addEventListener('load', function (e) {
+			inititalize();
+			attachEventsToAllMenus();
+			hookUpContextMenus();
+			var i;
+			for (i = 0; i < toAppend.length; i++) {
+				overlay.appendChild(toAppend[i]);
+			}
+		})
+	}
+
+
 	if (typeof define === "function" && define.amd) {
 		define( "contextMenu", [], function () { return contextmenu; } );
 	} else if (typeof module !== 'undefined') {
