@@ -20,7 +20,7 @@
 	THE SOFTWARE.
 */
 
-var EnableContextMenu = function (d, window) { "use strict";
+(function (d, window) { "use strict";
 	var nativeSupport = ((d.body.contextMenu === null) && window.HTMLMenuItemElement !== undefined),
 		lastX,				// Last position where root context menu was launched
 		lastY,				//  ''
@@ -610,5 +610,12 @@ var EnableContextMenu = function (d, window) { "use strict";
 		window.contextmenu = old_contextmenu;
 		return contextmenu;
 	};
-	return window.contextmenu = contextmenu;
-};
+	if (typeof define === "function" && define.amd) {
+		define( "contextMenu", [], function () { return contextmenu; } );
+	} else if (typeof module !== 'undefined') {
+		module.exports = contextmenu;
+	} else {
+		window.contextmenu = contextmenu;
+	}
+	
+})(document, window);
