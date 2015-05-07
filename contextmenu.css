@@ -8,16 +8,20 @@ body > div._contextmenu_screen_ {
     display: none;
     opacity: 1.0;
     -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
     overflow: hidden;
 	z-index: 120000;
 }
-body > menu {
+body > cmenu {
     display: none;
 }
-._contextmenu_screen_ menu.fadeout {
+._contextmenu_screen_ cmenu.fadeout {
     -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
 }
-._contextmenu_screen_ menu {
+._contextmenu_screen_ cmenu {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -30,7 +34,7 @@ body > menu {
     overflow: hidden;
 }
 
-._contextmenu_screen_ > menu {
+._contextmenu_screen_ > cmenu {
     
     position: fixed;
     display: none;
@@ -38,6 +42,9 @@ body > menu {
     z-Index: 30000;
     user-select: none;
     -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
     list-style: none;
 }
 
@@ -45,16 +52,19 @@ body > menu {
     content: attr(label);
 }
 
-._contextmenu_screen_ menu *{
+._contextmenu_screen_ cmenu *{
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
-._contextmenu_screen_ menu menuitem{
+._contextmenu_screen_ cmenu menuitem{
     -webkit-user-drag: none;
 }
 
-.win7 ._contextmenu_screen_ menu {
+.win7 ._contextmenu_screen_ cmenu {
     background: #f0f0f0 url(repeat-y.png?) repeat-y;
     font-family: 'Segoe UI';
     font-size: 13px;
@@ -65,22 +75,22 @@ body > menu {
     -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
     color: black;
 }
-.win7 menu menuitem {
+.win7 cmenu menuitem {
     padding: 0px 5px 0px 32px;
     height: 20px;
     border-radius: 3px;
     border: 1px solid transparent;
 }
-.win7 menu menuitem:hover{
+.win7 cmenu menuitem:hover{
     border: 1px solid #b3d0f5;
     background-color: rgba(172, 201,255, 0.05);
 }
 
-.win7 menu menuitem[open=true]{
+.win7 cmenu menuitem[open=true]{
     border: 1px solid #b3d0f5;
     background-color: rgba(172, 201,255, 0.05);
 }
-.win7 menu hr {
+.win7 cmenu hr {
     height: 0px;
     border:none;
     border-bottom: 1px solid white;
@@ -89,7 +99,7 @@ body > menu {
     margin-left: 27px;
 }
 
-.win7 ._contextmenu_screen_ menu > .submenu:after{
+.win7 ._contextmenu_screen_ cmenu > .submenu:after{
     content: " ";
     display: block;
     width: 4px;
@@ -101,7 +111,7 @@ body > menu {
     top: 6px;
 }
 
-.osx10_7 ._contextmenu_screen_ > menu {
+.osx10_7 ._contextmenu_screen_ > cmenu {
     background-color:rgba(255,255,255, 0.9490196078);
     
     -moz-background-clip: padding;     /* Firefox 3.6 */
@@ -117,15 +127,18 @@ body > menu {
     border-radius: 5px;
     padding: 4px 0;
     -webkit-box-shadow: 0px 12px 10px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 12px 10px rgba(0,0,0,0.2);
+    -o-box-shadow: 0px 12px 10px rgba(0,0,0,0.2);
+    box-shadow: 0px 12px 10px rgba(0,0,0,0.2);
     font-size: 14px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
-.osx10_7 ._contextmenu_screen_ > menu.submenu {
+.osx10_7 ._contextmenu_screen_ > cmenu.submenu {
     border-top-left-radius: 0px;
 }
-.osx10_7 ._contextmenu_screen_ menu > .submenu:after{
+.osx10_7 ._contextmenu_screen_ cmenu > .submenu:after{
     content: "\25B6";
     float: right;
     position: relative;
@@ -135,26 +148,26 @@ body > menu {
     color: #404040;
 }
 
-.osx10_7 ._contextmenu_screen_ menu > .submenu:hover:after{
+.osx10_7 ._contextmenu_screen_ cmenu > .submenu:hover:after{
     color: white;
 }
-.osx10_7 ._contextmenu_screen_ menu > .submenu[open=true]:after{
+.osx10_7 ._contextmenu_screen_ cmenu > .submenu[open=true]:after{
     color: white;
 }
 
-.osx10_7 ._contextmenu_screen_ menu menuitem{
+.osx10_7 ._contextmenu_screen_ cmenu menuitem{
     height: 19px;
     padding: 0px 19px 0px 21px;
 }
-.osx10_7 ._contextmenu_screen_ menu menuitem:hover{
+.osx10_7 ._contextmenu_screen_ cmenu menuitem:hover{
     background: #3c6ff7 url(repeat-x.png) repeat-x;
     color: white;
 }
-.osx10_7 ._contextmenu_screen_ menu menuitem.submenu[open=true]{
+.osx10_7 ._contextmenu_screen_ cmenu menuitem.submenu[open=true]{
     background: #3c6ff7 url(repeat-x.png) repeat-x;
     color: white;
 }
-.osx10_7 ._contextmenu_screen_ menu hr {
+.osx10_7 ._contextmenu_screen_ cmenu hr {
     height:0px;
     border: none;
     /* results in background: #e3e3e3; */

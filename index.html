@@ -9,25 +9,25 @@
 </head>
 <body>
   <a href="http://github.com/aantthony/contextmenu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
-  <menu type="context" id="samplemenu">
+  <cmenu type="context" id="samplemenu">
     <menuitem label="New Folder" onclick=""></menuitem>
     <hr />
     <menuitem label="Get Info"></menuitem>
     <hr />
     <menuitem label="Change Desktop Background&hellip;"></menuitem>
     <menuitem label="Clean Up" onclick="alert('source');"></menuitem>
-    <menu label="Clean Up By">
+    <cmenu label="Clean Up By">
       <menuitem label="Name"></menuitem>
       <menuitem label="Kind"></menuitem>
       <menuitem label="Date Modified"></menuitem>
-    </menu>
-    <menu label="Sort By">
+    </cmenu>
+    <cmenu label="Sort By">
       <menuitem label="Name"></menuitem>
       <menuitem label="Kind"></menuitem>
       <menuitem label="Date Modified"></menuitem>
-    </menu>
+    </cmenu>
     <menuitem label="Show View Options"></menuitem>
-  </menu>
+  </cmenu>
   <div class="header">
     <div class="container">
       <h1>ContextMenu</h1>
@@ -150,12 +150,12 @@ contextmenu.attach($("#id"), menu);
         <div class="span6">
           HTML notation: (direct child of body)
           <pre class="prettyprint">
-&lt;menu type="context" id="menu"&gt;
+&lt;cmenu type="context" id="menu"&gt;
   &lt;menuitem label="Standard"&gt;&lt;/menuitem&gt;
   &lt;hr /&gt;
   &lt;menuitem label="Checkbox" checked="checked"&gt;&lt;/menuitem&gt;
   &lt;menuitem label="Key" key="&amp;#8984;A"&gt;&lt;/menuitem&gt;
-&lt;/menu&gt;</pre>
+&lt;/cmenu&gt;</pre>
         <p>If the html node is generated after the page load, then call <code class="prettyprint">contextmenu.prepare($("#menu"));</code> and use <code class="prettyprint">contextmenu.attach</code> when needed.
         </div>
       </div>
