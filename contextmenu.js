@@ -21,7 +21,9 @@
 */
 
 (function (d, window) { "use strict";
-    var nativeSupport = ((d.createElement('body').contextMenu === null) && window.HTMLMenuItemElement !== undefined),
+    var nativeSupport = false, //((d.createElement('body').contextMenu === null) && window.HTMLMenuItemElement !== undefined),
+        cmKey = nativeSupport ? 'contextMenu' : '_contextMenu', // Which attribute to use
+        menuNodeName = 'CMENU',
         lastX,              // Last position where root context menu was launched
         lastY,              //  ''
         mousedown_timeout,  // The timer which in timeout ms, will set the overlay with display: false
@@ -118,7 +120,7 @@
     // menu.onmouseover
     function onmouseover(e) {
         //This event is also triggered after mouseover on submenu menuitems
-        var menu = ancestor("MENU", e.target),
+        var menu = ancestor(menuNodeName, e.target),
             msl,
             a,
             i;
@@ -142,7 +144,7 @@
 
     // menu.onmousedown
     function onmousedown(e) {
-        if (e.target.nodeName === "MENU") {
+        if (e.target.nodeName === menuNodeName) {
             if (e.offsetX === 0) {
                 //Left 1px border shouldn't be included.
                 //Close the menu: (bubble event)
@@ -156,7 +158,7 @@
     function onsubcontextmenuout(e) {
         // Cancel any other previews
         preview_show_timer = clearTimeout(preview_show_timer);
-        var menu = ancestor("MENU", e.toElement);
+        var menu = ancestor(menuNodeName, e.toElement);
         
         // The user has deselected an expandable menu item.
         // If the mouse has moved to the new menu, then we don't hide it:
@@ -175,8 +177,8 @@
         //Create a preview
         preview_show_timer = clearTimeout(preview_show_timer);
         preview_show_timer = setTimeout(function () {
-            var menuitem = e.srcElement,
-                menu = menuitem.contextMenu,
+            var menuitem = e.target,
+                menu = menuitem[cmKey],
                 pos;
 
             // For later removing the [open] attribute (for styling)
@@ -210,7 +212,7 @@
         menu.addEventListener("mouseover", onmouseover, false);
         menu.addEventListener("mousedown", onmousedown);
         menu.addEventListener("contextmenu", menuoncontextmenu);
-        if (p.nodeName === "MENU") {
+        if (p.nodeName === menuNodeName) {
             // If it is a menu within a menu, instead make it a menu which points to another menu.
             // It would be better to keep it as menu > menu ...,
             // but styling became too difficult so menu > menu s are replaced with menuitem.submenu
@@ -219,7 +221,7 @@
             menu.classList.add("submenu");
             clone.className =  menu.className;
             clone.setAttribute("label", menu.getAttribute("label"));
-            clone.contextMenu = menu;
+            clone[cmKey] = menu;
             clone.addEventListener("mouseover", onsubcontextmenu);
             clone.addEventListener("mouseout", onsubcontextmenuout);
             p.replaceChild(clone, menu);
@@ -278,12 +280,12 @@
         if (!node || !node.hasAttribute) {
             return;
         }
-        if (node.contextMenu) {
-            return node.contextMenu;
+        if (node[cmKey]) {
+            return node[cmKey];
         }
         if (node.hasAttribute("contextmenu")) {
             var node = d.getElementById(node.getAttribute("contextmenu"));
-            node.contextMenu = node;
+            node[cmKey] = node;
             return node;
         }
         return contextMenufor(node.parentNode);
@@ -319,7 +321,7 @@
 
     // ([contextmenu]).oncontextmenu
     function oncontextmenu(e) {
-        var menu = contextMenufor(e.srcElement),
+        var menu = contextMenufor(e.target),
             x = e.clientX,
             y = e.clientY;
         initContextMenu(menu, e.clientX, e.clientY);
@@ -369,7 +371,7 @@
             }
             var menuitem = e.target;
             if (menuitem.nodeName === "MENUITEM") {
-                if (menuitem.contextMenu) {
+                if (menuitem[cmKey]) {
                     return false;
                 }
                 if (holding) {
@@ -474,7 +476,7 @@
         });
     }
     function attachEventsToAllMenus() {
-        var menus_dom = d.getElementsByTagName("menu"),
+        var menus_dom = d.getElementsByTagName(menuNodeName),
             i,
             l,
             menus = [];
@@ -493,7 +495,7 @@
             l;
         for (i = 0, l = linkers.length; i < l; i++) {
             element = linkers[i];
-            element.contextMenu = d.getElementById(element.getAttribute("contextmenu"))
+            element[cmKey] = d.getElementById(element.getAttribute("contextmenu"))
             if (element.nodeName === "INPUT") {
                 element.addEventListener("mouseup", oncontextsheetbtnup);
                 element.addEventListener("contextmenu", oncontextsheet);
@@ -503,7 +505,7 @@
         }
     }
     function buildMenu(x) {
-        var menu = d.createElement("menu"),
+        var menu = d.createElement(menuNodeName),
             i,
             l,
             xi,
@@ -558,7 +560,7 @@
         if (nativeSupport) {
             return menu;
         }
-        submenus = menu.getElementsByTagName("menu");
+        submenus = menu.getElementsByTagName(menuNodeName);
         menus = [menu];
         for (i = 0, l = submenus.length; i < l; i++) {
             menus.push(submenus[i]);
@@ -600,7 +602,7 @@
             element.setAttribute("contextmenu", menu.id);
             return;
         }
-        element.contextMenu = menu;
+        element[cmKey] = menu;
         if (element.nodeName === "INPUT" || element.nodeName === "BUTTON") {
             element.addEventListener("mouseup", oncontextsheetbtnup);
             // element.addEventListener("mousedown", oncontextsheet); css :hover doesn't work
