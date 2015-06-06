@@ -1,6 +1,6 @@
 {
   "name": "contextmenu",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "native appearance html/css context menu",
   "main": "contextmenu.js",
   "scripts": {
@@ -8,10 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aantthony/contextmenu.git"
+    "url": "git+https://github.com/aantthony/contextmenu.git"
   },
   "author": "",
-  "license": "LGPL",
-  "gitHead": "fdada2ed83d595b0854d5f317a2d28bcd0948d7b",
-  "readmeFilename": "readme.md"
+  "license": "LGPL-3.0 OR MIT",
+  "bugs": {
+    "url": "https://github.com/aantthony/contextmenu/issues"
+  },
+  "homepage": "https://github.com/aantthony/contextmenu#readme"
 }
