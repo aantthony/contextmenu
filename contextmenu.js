@@ -1,16 +1,13 @@
  /*
     Copyright (C) 2012 Anthony Foster, https://github.com/aantthony/contextmenu (v0.1)
-
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
     in the Software without restriction, including without limitation the rights
     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
     copies of the Software, and to permit persons to whom the Software is
     furnished to do so, subject to the following conditions:
-
     The above copyright notice and this permission notice shall be included in
     all copies or substantial portions of the Software.
-
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -159,7 +156,7 @@
         // Cancel any other previews
         preview_show_timer = clearTimeout(preview_show_timer);
         var menu = ancestor(menuNodeName, e.toElement);
-        
+
         // The user has deselected an expandable menu item.
         // If the mouse has moved to the new menu, then we don't hide it:
         if (menu === preview) {
@@ -190,9 +187,28 @@
             }
             preview = menu;
             pos = offset(menuitem);
-            menu.style.top = Math.max(pos.top - 5, 0) + "px";
-            menu.style.left = (pos.left + pos.width - 1) + "px";
             showMenu(menu);
+            var top = pos.top
+            var left = pos.left + pos.width
+            var bottom = top + menu.offsetHeight
+            var right = left + menu.offsetWidth
+            var bodyHeight = document.body.offsetHeight
+            var bodyWidth = document.body.offsetWidth
+            // Make sure contextmenu stays within window bounds.
+            if (bottom > bodyHeight) {
+              top -= bottom - bodyHeight
+            }
+            else {
+              top -= 5
+            }
+            if (right > bodyWidth) {
+              left -= right - pos.left
+            }
+            else {
+              left -= 1
+            }
+            menu.style.top = Math.max(top, 0) + "px";
+            menu.style.left = left + "px";
         }, 200);
         // Don't stop propagation, the event bubbles to the <menu /> mouseover handler,
         // which will hide any dead contextmenus
@@ -203,7 +219,7 @@
         } else {
             toAppend.push(menu);
         }
-        
+
     }
     // Adds javascript code, so it works without native html5 contextmenu support
     function prepareMenu(menu) {
@@ -308,11 +324,11 @@
                 e.screenY,
                 e.clientX,
                 e.clientY,
-                false,      // Don't apply any key modifiers 
+                false,      // Don't apply any key modifiers
                 false,
                 false,
                 false,
-                0,          // 0 - left, 1 - middle, 2 - right 
+                0,          // 0 - left, 1 - middle, 2 - right
                 null        //Single target
             );
             elm.dispatchEvent(evt);
@@ -347,7 +363,7 @@
     function inititalize() {
         menustack = [];
         overlay = d.createElement("div");
-        
+
         // Style:
         var os_code = "osx10_7",
             mouseup_wait_for_me = 0;
@@ -542,7 +558,7 @@
                         }
                     }
                 }
-                
+
                 menu.appendChild(menuitem);
             }
         }
@@ -638,5 +654,5 @@
     } else {
         window.contextmenu = contextmenu;
     }
-    
+
 })(document, window);
