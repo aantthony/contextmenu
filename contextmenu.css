@@ -99,6 +99,9 @@ body > cmenu {
     margin-left: 27px;
 }
 
+.win7 ._contextmenu_screen_ cmenu menuitem:before {
+    margin-right: 32px;
+}
 .win7 ._contextmenu_screen_ cmenu > .submenu:after{
     content: " ";
     display: block;
